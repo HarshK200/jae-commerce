@@ -9,7 +9,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        call_to_action: "#5bb450"
+        text: "#050316",
+        background: "#fbfbfe",
+        primary: "#27ce27",
+        secondary: "#e5ffdb",
+        accent: "#84ff3d",
       },
     },
   },
