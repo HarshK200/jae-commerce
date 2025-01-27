@@ -1,4 +1,4 @@
-import { JaeLogo } from "../../../public/all-logos";
+import { JaeLogo } from "@public/logos-svg/all-logos";
 
 export default function LandingPage() {
   return (

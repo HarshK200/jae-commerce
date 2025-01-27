@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@public/*": ["./public/*"],
       "@components/*": ["./src/components/*"],
       "@store/*": ["./src/store/*"]
     }
