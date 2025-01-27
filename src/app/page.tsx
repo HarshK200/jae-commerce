@@ -1,11 +1,11 @@
 import React from "react";
+import LandingPage from "@components/Landing/LandingPage";
 
-export default function Home() {
+// server side rendered page because of the async
+export default async function Landing() {
   return (
-    <nav className="flex">
-      <h1 className="text-2xl px-5 py-2 text-primary">
-        <b>JAE</b>
-      </h1>
-    </nav>
+    <>
+      <LandingPage />
+    </>
   );
 }
