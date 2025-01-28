@@ -1,10 +1,9 @@
 import React from "react";
 
-const JaeLogo = () => (
+const JaeLogo = ({ width }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="1.37in"
-    height="0.4in"
+    width={`${width}in`}
     viewBox="0 0 411 120"
   >
     <path
