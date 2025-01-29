@@ -1,8 +1,10 @@
 "use client";
 import { Search } from "lucide-react";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 
 export default function SearchBar() {
+  const [searchText, setSearchText] = useState<string>("");
+
   function handleSearch(e: MouseEvent<HTMLButtonElement>) {}
 
   return (
@@ -10,6 +12,8 @@ export default function SearchBar() {
       <input
         className="w-[90%] px-8 py-1.5 rounded-l-full border border-r-[0] border-zinc-300 outline-none"
         placeholder="Search..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
       />
       <button
         className="w-14 bg-white flex justify-center py-1.5 border border-l-[0] rounded-r-full border-zinc-300"
