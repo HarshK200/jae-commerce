@@ -1,22 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-
-const db = new PrismaClient();
+import db from "../src/db"; // NOTE: you cannot use the tsconfig type alias here i.e. @/db
+import { hash } from "bcrypt";
 
 async function seedUsers() {
   const dummyUsers = [
     {
       id: "1",
-      email: "testuser@example.com",
-      password: "some$ecure_password1",
+      email: "testuser1@example.com",
+      password: await hash("123", 12),
       firstName: "Test",
       lastName: "User",
-    },
-    {
-      id: "2",
-      email: "testuser2@example.com",
-      password: "some$ecure_password2",
-      firstName: "Testy",
-      lastName: "User2",
     },
   ];
 
