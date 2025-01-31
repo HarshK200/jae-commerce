@@ -19,8 +19,13 @@ export default function LocationBtn() {
       if (location.city && location.region) {
         return;
       }
-      const req = await axios.get("https://ipapi.co/json/");
-      const locData = req.data;
+      // const req = await axios.get("https://ipapi.co/json/");
+      // const locData = req.data;
+
+      const locData = {
+        city: "temp",
+        region: "area",
+      };
 
       dispatch(
         setLocation({

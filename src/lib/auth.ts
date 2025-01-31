@@ -63,7 +63,7 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        // this will be what goes into the jwt by next-auth
+        // this will be what goes into the jwt token by next-auth
         return {
           id: user.id,
           email: user.email,

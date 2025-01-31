@@ -1,10 +1,12 @@
 import React from "react";
 
-const JaeLogo = ({ width }) => (
+const JaeLogo = ({ width, onClick, classname }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={`${width}in`}
     viewBox="0 0 411 120"
+    onClick={onClick}
+    className={classname}
   >
     <path
       id="Selection"
