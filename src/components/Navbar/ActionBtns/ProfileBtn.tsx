@@ -5,7 +5,7 @@ export default function ProfileBtn() {
   return (
     <button className="flex gap-2 transition-transform hover:scale-105 active:scale-100">
       <UserRound width={23} />
-      <p>firstname</p>
+      <p>Firstname</p>
     </button>
   );
 }
