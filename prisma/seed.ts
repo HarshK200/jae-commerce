@@ -7,8 +7,8 @@ async function seedUsers() {
       id: "1",
       email: "testuser1@example.com",
       password: await hash("123", 12),
-      firstName: "Test",
-      lastName: "User",
+      firstname: "Test",
+      lastname: "User",
     },
   ];
 
@@ -22,8 +22,8 @@ async function seedUsers() {
         create: {
           email: user.email,
           password: user.password,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstname: user.firstname,
+          lastname: user.lastname,
         },
       });
     });

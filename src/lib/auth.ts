@@ -2,6 +2,7 @@ import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import db from "@/db";
 import { compare } from "bcrypt";
+import { User } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -56,8 +57,8 @@ export const authOptions: AuthOptions = {
 
         if (
           !isPassValid ||
-          credentials.firstname !== user.firstName ||
-          credentials.lastname !== user.lastName
+          credentials.firstname !== user.firstname ||
+          credentials.lastname !== user.lastname
         ) {
           return null;
         }
@@ -66,10 +67,36 @@ export const authOptions: AuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          firstname: user.firstName,
-          lastname: user.lastName,
+          firstname: user.firstname,
+          lastname: user.lastname,
         };
       },
     }),
   ],
+  callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        const u = user as unknown as User;
+
+        return {
+          ...token,
+          id: u.id,
+          firstname: u.firstname,
+          lastname: u.lastname,
+        };
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          firstname: token.firstname,
+          lastname: token.lastname,
+        },
+      };
+    },
+  },
 };
