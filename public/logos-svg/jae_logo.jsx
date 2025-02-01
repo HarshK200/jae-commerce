@@ -11,7 +11,6 @@ const JaeLogo = ({ width, onClick, classname }) => (
     <path
       id="Selection"
       fill="#27ce27"
-      stroke="black"
       strokeWidth="0"
       d="M 44.00,39.00
            C 45.07,15.99 71.31,3.36 89.96,16.25
