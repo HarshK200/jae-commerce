@@ -16,7 +16,7 @@ type tFormDetails = {
 };
 
 export default function RegisterForm() {
-  const [responseErr, setResponseErr] = useState<string | undefined>(undefined);
+  const [responseErr, setResponseErr] = useState<string | null>(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
   const router = useRouter();
@@ -30,6 +30,7 @@ export default function RegisterForm() {
       if (res.data.status === "success") {
         router.push("/api/auth/signin");
       }
+      setResponseErr(null);
     } catch (err: any) {
       setResponseErr(err.response.data.error);
       // console.log("error occured registering user: ", err);
@@ -119,7 +120,7 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      {responseErr ? <Alert>{responseErr}</Alert> : null}
+      {responseErr && <Alert>{responseErr}</Alert>}
 
       <Button className="my-4 font-bold" type="sumbit">
         Register
