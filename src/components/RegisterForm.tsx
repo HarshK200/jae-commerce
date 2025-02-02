@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Alert } from "./ui/Alert";
 
 type tFormDetails = {
   firstname?: string;
@@ -15,24 +16,23 @@ type tFormDetails = {
 };
 
 export default function RegisterForm() {
+  const [responseErr, setResponseErr] = useState<string | undefined>(undefined);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("register clicked with details: ", formDetails);
 
     try {
       const res = await axios.post("/api/register", formDetails);
-      console.log(res.data);
 
       if (res.data.status === "success") {
         router.push("/api/auth/signin");
       }
-    } catch (err) {
-      alert("error occured registering");
-      console.log("error occured registering user: ", err);
+    } catch (err: any) {
+      setResponseErr(err.response.data.error);
+      // console.log("error occured registering user: ", err);
     }
   }
 
@@ -118,6 +118,9 @@ export default function RegisterForm() {
           </button>
         </div>
       </div>
+
+      {responseErr ? <Alert>{responseErr}</Alert> : null}
+
       <Button className="my-4 font-bold" type="sumbit">
         Register
       </Button>

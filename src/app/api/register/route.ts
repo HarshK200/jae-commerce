@@ -31,26 +31,41 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const user = await db.user.create({
+    const dbUser = await db.user.create({
       data: reqUser,
     });
 
     return NextResponse.json(
       {
         status: "success",
-        user: user,
+        user: {
+          id: dbUser.id,
+          email: dbUser.email,
+        },
       },
       { status: 201 },
     );
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    console.log("error", err);
+
+    let errMsg: string, statusCode: number;
+
+    switch (err.code) {
+      case "P2002":
+        errMsg = "Email already registered";
+        statusCode = 422;
+        break;
+      default:
+        errMsg = "Internal server error";
+        statusCode = 500;
+    }
 
     return NextResponse.json(
       {
         status: "failed",
-        error: "internal server error",
+        error: errMsg,
       },
-      { status: 500 },
+      { status: statusCode },
     );
   }
 }
