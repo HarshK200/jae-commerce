@@ -1,4 +1,4 @@
-import LoginForm from "@/components/LoginForm";
+import SigninForm from "@/components/SigninForm";
 import JaeCart from "@public/logos-svg/jae_cart";
 import Link from "next/link";
 
@@ -8,11 +8,11 @@ export default function SigninPage() {
       <Link className="flex items-center py-2 fixed top-6 left-12" href="/">
         <JaeCart width={0.46} />
       </Link>
-      <div className="sm:shadow-xl sm:w-[450px] rounded-xl p-8 bg-white">
+      <div className="sm:shadow-xl w-full sm:w-[500px] rounded-xl p-12 bg-white">
         <h1 className="pt-3 pb-8 text-2xl font-semibold text-slate-700">
           Sign in
         </h1>
-        <LoginForm />
+        <SigninForm />
         <p className="flex justify-center gap-1 my-1">
           Need to create an account?
           <Link href="/register" className="text-purple-900 hover:underline">

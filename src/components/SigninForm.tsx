@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Alert } from "./ui/Alert";
 import { signIn } from "next-auth/react";
 
@@ -12,24 +12,32 @@ type tFormDetails = {
   password?: string;
 };
 
-export default function LoginForm() {
+export default function SigninForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
+  const [responseErr, setResponseErr] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const error = searchParams.get("error") ? "Invalid credentials" : null;
-  const callbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl = searchParams.get("callbackUrl") || "/home";
+  const router = useRouter();
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      signIn("credentials", {
+      const res = await signIn("credentials", {
+        redirect: false,
         email: formDetails.email,
         password: formDetails.password,
         callbackUrl: callbackUrl || "/home",
       });
+
+      if (res?.ok) {
+        setResponseErr(null);
+        router.push(callbackUrl);
+      } else {
+        setResponseErr("Invalid email or password");
+      }
     } catch (err: any) {
-      // setResponseErr(err.response.data.error);
       console.log("error occured registering user: ", err);
     }
   }
@@ -83,7 +91,7 @@ export default function LoginForm() {
         </div>
       </div>
 
-      {error && <Alert>{error}</Alert>}
+      {responseErr && <Alert>{responseErr}</Alert>}
 
       <Button className="my-4 font-bold" type="sumbit">
         Login

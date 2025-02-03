@@ -8,14 +8,17 @@ export default function RegisterPage() {
       <Link className="flex items-center py-2 fixed top-6 left-12" href="/">
         <JaeCart width={0.46} />
       </Link>
-      <div className="sm:shadow-xl sm:w-[450px] rounded-xl p-8 bg-white">
+      <div className="sm:shadow-xl w-full sm:w-[500px] rounded-xl p-12 bg-white">
         <h1 className="pt-3 pb-8 text-2xl font-semibold text-slate-700">
           Create your Account
         </h1>
         <RegisterForm />
         <p className="flex justify-center gap-1 my-1">
           Already have an account?
-          <Link href="/api/auth/signin" className="text-purple-900 hover:underline">
+          <Link
+            href="/api/auth/signin"
+            className="text-purple-900 hover:underline"
+          >
             Sign in
           </Link>
         </p>
