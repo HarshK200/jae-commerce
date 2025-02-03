@@ -5,20 +5,13 @@ import { compare } from "bcrypt";
 import { User } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: "/signin",
+  },
   providers: [
     CredentialsProvider({
       name: "Signin",
       credentials: {
-        firstname: {
-          label: "First Name",
-          type: "text",
-          placeholder: "firstname",
-        },
-        lastname: {
-          label: "Last Name",
-          type: "text",
-          placeholder: "lastname",
-        },
         email: {
           label: "email",
           type: "email",
@@ -32,12 +25,7 @@ export const authOptions: AuthOptions = {
       },
 
       async authorize(credentials, req) {
-        if (
-          !credentials?.email ||
-          !credentials.password ||
-          !credentials.firstname ||
-          !credentials.lastname
-        ) {
+        if (!credentials?.email || !credentials?.password) {
           return null; // returning null means the credentials were incorrect
         }
 
@@ -54,12 +42,7 @@ export const authOptions: AuthOptions = {
         }
 
         const isPassValid = await compare(credentials.password, user.password);
-
-        if (
-          !isPassValid ||
-          credentials.firstname !== user.firstname ||
-          credentials.lastname !== user.lastname
-        ) {
+        if (!isPassValid) {
           return null;
         }
 

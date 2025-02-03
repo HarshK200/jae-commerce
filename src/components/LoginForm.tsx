@@ -3,75 +3,39 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Alert } from "./ui/Alert";
+import { signIn } from "next-auth/react";
 
 type tFormDetails = {
-  firstname?: string;
-  lastname?: string;
   email?: string;
   password?: string;
 };
 
-export default function RegisterForm() {
-  const [responseErr, setResponseErr] = useState<string | null>(null);
+export default function LoginForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error") ? "Invalid credentials" : null;
+  const callbackUrl = searchParams.get("callbackUrl");
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/register", formDetails);
-
-      if (res.data.status === "success") {
-        router.push("/api/auth/signin");
-      }
-      setResponseErr(null);
+      signIn("credentials", {
+        email: formDetails.email,
+        password: formDetails.password,
+        callbackUrl: callbackUrl || "/home",
+      });
     } catch (err: any) {
-      setResponseErr(err.response.data.error);
-      // console.log("error occured registering user: ", err);
+      // setResponseErr(err.response.data.error);
+      console.log("error occured registering user: ", err);
     }
   }
 
   return (
     <form onSubmit={onSubmit} className="flex gap-y-5 flex-col">
-      <div className="flex gap-4 w-full">
-        <div className="w-full">
-          <label htmlFor="firstname" className="text-sm text-slate-700">
-            First name
-          </label>
-          <Input
-            required
-            id="firstname"
-            type="text"
-            value={formDetails?.firstname || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setFormDeatils((prev) => {
-                return { ...prev, firstname: e.target.value };
-              });
-            }}
-          />
-        </div>
-        <div className="w-full">
-          <label htmlFor="lastname" className="text-sm text-slate-700">
-            Last name
-          </label>
-          <Input
-            required
-            id="lastname"
-            type="text"
-            value={formDetails?.lastname || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setFormDeatils((prev) => {
-                return { ...prev, lastname: e.target.value };
-              });
-            }}
-          />
-        </div>
-      </div>
       <div>
         <label htmlFor="email" className="text-sm text-slate-700">
           Email
@@ -119,10 +83,10 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      {responseErr && <Alert>{responseErr}</Alert>}
+      {error && <Alert>{error}</Alert>}
 
       <Button className="my-4 font-bold" type="sumbit">
-        Register
+        Login
       </Button>
     </form>
   );
