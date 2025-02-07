@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SigninPage() {
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-white sm:bg-slate-100">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-white sm:bg-slate-100">
       <Link className="flex items-center py-2 fixed top-6 left-12" href="/">
         <JaeCart width={0.46} />
       </Link>

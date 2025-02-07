@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="flex justify-between items-center py-2.5 px-10 bg-zinc-100">
       <JaeLogo
-        width={"1.1"}
+        width={"1"}
         classname="hover:cursor-pointer"
         onClick={() => {
           redirect("/");
