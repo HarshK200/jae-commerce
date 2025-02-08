@@ -1,3 +1,7 @@
+interface InputProps extends React.HTMLProps<HTMLInputElement> {
+  type: React.HTMLInputTypeAttribute;
+}
+
 export function Input({
   required,
   id,
@@ -7,7 +11,7 @@ export function Input({
   className,
   value,
   onChange,
-}: React.HTMLProps<HTMLInputElement>) {
+}: InputProps) {
   return (
     <input
       required={required}

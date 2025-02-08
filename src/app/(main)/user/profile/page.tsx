@@ -4,8 +4,6 @@ import { getServerSession } from "next-auth";
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
 
-  console.log(session);
-
   return (
     <div className="flex flex-col">
       <h1>USER DETAILS:</h1>

@@ -6,10 +6,11 @@ import ProfileBtn from "@/components/Navbar/ActionBtns/ProfileBtn";
 import LocationBtn from "@/components/Navbar/ActionBtns/LocationBtn";
 import { useSession } from "next-auth/react";
 import { Signin, Signout } from "./ActionBtns/AuthBtns";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const session = useSession();
+  const router = useRouter();
 
   return (
     <nav className="flex justify-between items-center py-2.5 px-10 bg-zinc-100">
@@ -17,7 +18,7 @@ export default function Navbar() {
         width={"1"}
         classname="hover:cursor-pointer"
         onClick={() => {
-          redirect("/");
+          router.push("/");
         }}
       />
       <SearchBar />
@@ -26,7 +27,12 @@ export default function Navbar() {
         <LocationBtn />
         {session.status === "authenticated" ? (
           <div className="flex gap-5 items-center">
-            <ProfileBtn firstname={session.data.user.firstname} />
+            <ProfileBtn
+              firstname={session.data.user.firstname}
+              onClick={() => {
+                router.push("/user/profile");
+              }}
+            />
             <Signout />
           </div>
         ) : (

@@ -1,4 +1,4 @@
-import db from "../src/db"; // NOTE: you cannot use the tsconfig type alias here i.e. @/db
+import { prisma as db } from "../src/db"; // NOTE: you cannot use the tsconfig type alias here i.e. @/db
 import { hash } from "bcrypt";
 
 async function seedUsers() {

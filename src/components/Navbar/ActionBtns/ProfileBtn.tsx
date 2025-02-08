@@ -1,9 +1,16 @@
 "use client";
 import { UserRound } from "lucide-react";
 
-export default function ProfileBtn({ firstname }: { firstname: string | undefined }) {
+interface ProfileBtnProps extends React.HTMLProps<HTMLButtonElement> {
+  firstname: string | undefined;
+}
+
+export default function ProfileBtn({ firstname, onClick }: ProfileBtnProps) {
   return (
-    <button className="flex gap-2 transition-transform hover:scale-105 active:scale-100">
+    <button
+      className="flex gap-2 transition-transform hover:scale-105 active:scale-100"
+      onClick={onClick}
+    >
       <UserRound width={23} />
       <p>{firstname ? firstname : "fetching..."}</p>
     </button>

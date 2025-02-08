@@ -21,3 +21,26 @@ model User {
     firstname String
     lastname  String
 }
+
+model Seller {
+    id           String    @id @default(uuid())
+    email        String    @unique
+    password     String
+    firstname    String
+    lastname     String
+    phone_no     Int
+    shop_address String
+    products     Product[] @relation("SellingProducts")
+}
+
+model Product {
+    id                String   @id @default(uuid())
+    image_url         String
+    showcase_img_urls String[]
+    name              String
+    description       String
+    price             Int
+    inventory         Int
+    seller            Seller   @relation("SellingProducts", fields: [sellerId], references: [id])
+    sellerId          String
+}
