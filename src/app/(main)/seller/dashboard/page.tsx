@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-export default function DashboardPage() {
+export default function SellerDashboardPage() {
   return (
     <div className="min-h-screen w-screen flex flex-col items-center">
       <h1 className="text-3xl p-2">Dashboard</h1>

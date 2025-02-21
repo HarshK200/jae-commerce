@@ -4,7 +4,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 const roboto = Roboto({
-  weight: ["400"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -19,11 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${roboto.className} antialiased`}>
+    <html lang="en" className={`${roboto.variable} antialiased`}>
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

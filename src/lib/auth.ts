@@ -29,30 +29,38 @@ export const authOptions: AuthOptions = {
           return null; // returning null means the credentials were incorrect
         }
 
-        // look up the user in the db
-        const user = await db.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        try {
+          // look up the user in the db
+          const user = await db.user.findUnique({
+            where: {
+              email: credentials.email,
+            },
+          });
 
-        // not found in the db
-        if (!user) {
+          // not found in the db
+          if (!user) {
+            return null;
+          }
+
+          const isPassValid = await compare(
+            credentials.password,
+            user.password,
+          );
+          if (!isPassValid) {
+            return null;
+          }
+
+          // this will be what goes into the jwt token by next-auth
+          return {
+            id: user.id,
+            email: user.email,
+            firstname: user.firstname,
+            lastname: user.lastname,
+          };
+        } catch (error) {
+          console.log("Error authorization: ", error);
           return null;
         }
-
-        const isPassValid = await compare(credentials.password, user.password);
-        if (!isPassValid) {
-          return null;
-        }
-
-        // this will be what goes into the jwt token by next-auth
-        return {
-          id: user.id,
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname,
-        };
       },
     }),
   ],
