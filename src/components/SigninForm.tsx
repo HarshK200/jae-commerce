@@ -17,7 +17,7 @@ export default function SigninForm() {
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
   const [responseErr, setResponseErr] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/home";
+  const callbackUrl = searchParams.get("callbackUrl") || "/user/dashboard";
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent) {

@@ -1,6 +1,6 @@
 import React from "react";
 import LandingPage from "@/components/Landing/LandingPage";
-import Navbar from "@/components/Navbar/Navbar";
+import { Navbar } from "@/components/Navbar/Navbar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";

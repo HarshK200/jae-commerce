@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { Signin, Signout } from "./ActionBtns/AuthBtns";
 import { useRouter } from "next/navigation";
 
-export default function Navbar() {
+export function Navbar() {
   const session = useSession();
   const router = useRouter();
 
@@ -41,4 +41,9 @@ export default function Navbar() {
       </div>
     </nav>
   );
+}
+
+export function SellerNavbar() {
+  return <nav>
+  </nav>
 }
