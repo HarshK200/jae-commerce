@@ -12,7 +12,7 @@ export default function ProfileBtn({ firstname, onClick }: ProfileBtnProps) {
       onClick={onClick}
     >
       <UserRound width={23} />
-      <p>{firstname ? firstname : "fetching..."}</p>
+      <p>{firstname ? firstname : "user"}</p>
     </button>
   );
 }
