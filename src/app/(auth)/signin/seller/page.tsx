@@ -15,7 +15,7 @@ export default function SigninPage() {
         <SigninForm />
         <p className="flex justify-center gap-1 my-1">
           Need to create an account?
-          <Link href="/seller/register" className="text-purple-900 hover:underline">
+          <Link href="/register/seller" className="text-purple-900 hover:underline">
             Become a seller
           </Link>
         </p>

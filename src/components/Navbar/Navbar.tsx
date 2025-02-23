@@ -50,21 +50,21 @@ export function SellerNavbar() {
   const router = useRouter();
 
   return (
-    <nav className="flex justify-between items-center px-10 bg-zinc-100">
+    <nav className="grid grid-cols-3 px-10 bg-zinc-100">
       <JaeLogo
         width={"1"}
-        classname="hover:cursor-pointer"
+        classname="hover:cursor-pointer my-auto justify-self-start"
         onClick={() => {
           router.push("/");
         }}
       />
-      <div className="flex">
-        <NavLink href="/seller/dashboard">Dashboard</NavLink>
+      <div className="flex justify-self-center">
+        <NavLink href="/seller">Dashboard</NavLink>
         <NavLink href="/seller/products">Products</NavLink>
         <NavLink href="/seller/customers">Customers</NavLink>
         <NavLink href="/seller/sales">Sales</NavLink>
       </div>
-      <div className="flex items-center gap-x-8">
+      <div className="flex items-center gap-x-8 justify-self-end">
         <LocationBtn />
         <div className="flex gap-5 items-center">
           <ProfileBtn
