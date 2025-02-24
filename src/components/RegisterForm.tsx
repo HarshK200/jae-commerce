@@ -12,12 +12,15 @@ type tFormDetails = {
   lastname?: string;
   email?: string;
   password?: string;
+  isSeller?: boolean;
 };
 
-export default function RegisterForm() {
+export function UserRegisterForm() {
   const [responseErr, setResponseErr] = useState<string | null>(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [formDetails, setFormDeatils] = useState<tFormDetails>({});
+  const [formDetails, setFormDeatils] = useState<tFormDetails>({
+    isSeller: false,
+  });
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent) {

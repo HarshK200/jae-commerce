@@ -1,4 +1,3 @@
-import RegisterForm from "@/components/RegisterForm";
 import JaeCart from "@public/logos-svg/jae_cart";
 import Link from "next/link";
 
@@ -12,7 +11,7 @@ export default function RegisterPage() {
         <h1 className="pt-3 pb-8 text-2xl font-semibold text-slate-700">
           Become a seller today
         </h1>
-        <RegisterForm />
+        {/* <RegisterForm />  // TODO: write seller registeration form */}
         <p className="flex justify-center gap-1 my-1">
           Already have an account?
           <Link

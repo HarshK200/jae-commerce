@@ -4,8 +4,12 @@ import { prisma as db } from "@/db";
 import { z } from "zod";
 
 export async function POST(req: NextRequest) {
-  const { firstname, lastname, email, password } = await req.json();
+  const { firstname, lastname, email, password, isSeller } = await req.json();
   const hashedPassword = await hash(password, 10);
+
+  // TODO: write seller registration logic
+  if (isSeller) {
+  }
 
   // NOTE: ZOD validation on user sent data
   const userSchema = z.object({
@@ -13,12 +17,14 @@ export async function POST(req: NextRequest) {
     lastname: z.string().min(3).max(15),
     email: z.string().email(),
     password: z.string().min(8),
+    isSeller: z.boolean(),
   });
   const reqUser = {
     firstname: firstname,
     lastname: lastname,
     email: email,
     password: hashedPassword,
+    isSeller: isSeller,
   };
   const validatedUser = userSchema.safeParse(reqUser);
   if (!validatedUser.success) {
