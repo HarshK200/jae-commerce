@@ -1,4 +1,4 @@
-import SellerDashboardCard from "@/components/(Seller)/SellerDashBoardCard";
+import SellerDashboardCard from "@/components/seller/SellerDashBoardCard";
 import { prisma as db } from "@/db";
 import { formatNumber, formatCurrency } from "@/lib/formatters";
 
@@ -24,7 +24,7 @@ export default async function SellerDashboardPage() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <SellerDashboardCard
         title="Sales"
-        subtitle={formatNumber(salesData.numberOfOrders)}
+        subtitle={`${formatNumber(salesData.numberOfOrders)} Orders`}
         body={formatCurrency(salesData.amount)}
       />
     </div>
