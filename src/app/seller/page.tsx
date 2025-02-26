@@ -1,4 +1,4 @@
-import SellerDashboardCard from "@/components/seller/SellerDashBoardCard";
+import SellerDashboardCard from "@/components/(Seller)/SellerDashBoardCard";
 import { prisma as db } from "@/db";
 import { formatNumber, formatCurrency } from "@/lib/formatters";
 
