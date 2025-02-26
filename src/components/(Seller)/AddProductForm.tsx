@@ -62,7 +62,7 @@ export default function AddProductForm() {
           </label>
           <Select>
             {categories.map((category) => (
-              <Option>{category}</Option>
+              <Option key={category}>{category}</Option>
             ))}
           </Select>
         </div>
@@ -72,7 +72,7 @@ export default function AddProductForm() {
           </label>
           <Select>
             {categories.map((category) => (
-              <Option>{category}</Option>
+              <Option key={`sub ${category}`}>{category}</Option>
             ))}
           </Select>
         </div>
