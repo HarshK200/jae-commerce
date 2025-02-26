@@ -1,9 +1,16 @@
+"use client";
 import { createProduct } from "@/app/seller/_actions/products";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
+import { ChangeEvent, useState } from "react";
+import { formatCurrency } from "@/lib/formatters";
+import { Option, Select } from "@/components/ui/Select";
 
 export default function AddProductForm() {
+  const [price, setPrice] = useState<number | null>(null);
+  const categories = ["cat 1", "cat 2", "cat 3"];
+
   return (
     <form
       className="flex flex-col w-full py-8 px-44 gap-6"
@@ -19,7 +26,23 @@ export default function AddProductForm() {
         <label htmlFor="price" className="text-sm text-slate-700">
           Price
         </label>
-        <Input required id="price" name="price" type="number" />
+        <Input
+          required
+          id="price"
+          name="price"
+          type="number"
+          value={price || ""}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            try {
+              setPrice(Number(e.target.value));
+            } catch (e) {
+              console.log(e);
+            }
+          }}
+        />
+        <label className="text-sm text-slate-700">
+          {formatCurrency(price || 0)}
+        </label>
       </div>
       <div className="w-full flex flex-col">
         <label htmlFor="description" className="text-sm text-slate-700">
@@ -32,12 +55,33 @@ export default function AddProductForm() {
           className="text-sm"
         />
       </div>
-      <div className="w-full">
-        <label htmlFor="category" className="text-sm text-slate-700">
-          Category
+      <div className="w-full flex gap-8">
+        <div className="flex gap-2 items-center">
+          <label htmlFor="category" className="text-sm text-slate-700">
+            Category
+          </label>
+          <Select>
+            {categories.map((category) => (
+              <Option>{category}</Option>
+            ))}
+          </Select>
+        </div>
+        <div className="flex gap-2 items-center">
+          <label htmlFor="category" className="text-sm text-slate-700">
+            Sub-Category
+          </label>
+          <Select>
+            {categories.map((category) => (
+              <Option>{category}</Option>
+            ))}
+          </Select>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="inventory" className="text-sm text-slate-700">
+          Inventory
         </label>
-        {/* TODO: add dropdown*/}
-        <Input required id="category" name="category" type="number" />
+        <Input required id="inventory" name="inventory" type="number" />
       </div>
       <div>
         <label htmlFor="cover_image" className="text-sm text-slate-700">
@@ -64,8 +108,8 @@ export default function AddProductForm() {
           multiple
         />
       </div>
-      {/* TODO: add proudct cover_image, showcase_images, inventory */}
-      <Button type="submit" className="w-20">
+      {/* TODO: add proudct  inventory */}
+      <Button type="submit" className="w-24">
         Submit
       </Button>
     </form>
