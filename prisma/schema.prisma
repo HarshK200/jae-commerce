@@ -52,7 +52,7 @@ model Address {
 
 model Category {
     id             String        @id @default(uuid())
-    name           String
+    name           String        @unique
     description    String
     sub_categories SubCategory[]
 
@@ -63,7 +63,7 @@ model SubCategory {
     id            String    @id @default(uuid())
     parent_cat    Category  @relation(fields: [parent_cat_id], references: [id], onDelete: Restrict)
     parent_cat_id String
-    name          String
+    name          String    @unique
     description   String
     products      Product[]
 

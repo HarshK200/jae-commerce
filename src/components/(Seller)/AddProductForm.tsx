@@ -9,7 +9,7 @@ import { Option, Select } from "@/components/ui/Select";
 
 export default function AddProductForm() {
   const [price, setPrice] = useState<number | null>(null);
-  const categories = ["cat 1", "cat 2", "cat 3"];
+  const categories = ["cat 1", "cat 2", "cat 3"]; // TODO: fetch the categories from server
 
   return (
     <form
@@ -56,7 +56,7 @@ export default function AddProductForm() {
         />
       </div>
       <div className="w-full flex gap-8">
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center">
           <label htmlFor="category" className="text-sm text-slate-700">
             Category
           </label>
@@ -66,7 +66,7 @@ export default function AddProductForm() {
             ))}
           </Select>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center">
           <label htmlFor="category" className="text-sm text-slate-700">
             Sub-Category
           </label>
@@ -108,7 +108,6 @@ export default function AddProductForm() {
           multiple
         />
       </div>
-      {/* TODO: add proudct  inventory */}
       <Button type="submit" className="w-24">
         Submit
       </Button>
