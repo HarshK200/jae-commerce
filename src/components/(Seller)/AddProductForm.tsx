@@ -3,13 +3,39 @@ import { createProduct } from "@/app/seller/_actions/products";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { formatCurrency } from "@/lib/formatters";
 import { Option, Select } from "@/components/ui/Select";
+import axios from "axios";
+import type { Category, SubCategory } from "@prisma/client";
 
 export default function AddProductForm() {
+  // TODO: change all this sh*t to redux
   const [price, setPrice] = useState<number | null>(null);
-  const categories = ["cat 1", "cat 2", "cat 3"]; // TODO: fetch the categories from server
+  const [categories, setCategories] = useState<Category[] | null>(null);
+  const [subCategores, setSubCategories] = useState<SubCategory[] | null>(null);
+
+  const [selectedCat, setSelectedCat] = useState<Category | null>(null);
+  const [selectedSubCat, setSelectedSubCat] = useState<SubCategory | null>(
+    null,
+  );
+
+  useEffect(() => {
+    axios.get("/api/categories?all_cats=true").then((response) => {
+      setCategories(response.data.all_categories);
+      setSelectedCat(response.data.all_categories[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedCat) {
+      axios
+        .get(`/api/categories?parent_cat_id=${selectedCat?.id}`)
+        .then((response) => {
+          setSubCategories(response.data.sub_categories);
+        });
+    }
+  }, [selectedCat]);
 
   return (
     <form
@@ -61,9 +87,15 @@ export default function AddProductForm() {
             Category
           </label>
           <Select>
-            {categories.map((category) => (
-              <Option key={category}>{category}</Option>
-            ))}
+            {categories &&
+              categories.map((category) => (
+                <Option
+                  key={category.id}
+                  onClick={() => setSelectedCat(category)}
+                >
+                  {category.name}
+                </Option>
+              ))}
           </Select>
         </div>
         <div className="flex flex-col gap-2 items-center">
@@ -71,9 +103,10 @@ export default function AddProductForm() {
             Sub-Category
           </label>
           <Select>
-            {categories.map((category) => (
-              <Option key={`sub ${category}`}>{category}</Option>
-            ))}
+            {subCategores &&
+              subCategores.map((subCategory) => (
+                <Option key={subCategory.id}>{subCategory.name}</Option>
+              ))}
           </Select>
         </div>
       </div>

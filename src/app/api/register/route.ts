@@ -5,7 +5,6 @@ import { z } from "zod";
 
 export async function POST(req: NextRequest) {
   const { firstname, lastname, email, password, isSeller } = await req.json();
-  const hashedPassword = await hash(password, 10);
 
   // TODO: write seller registration logic
   if (isSeller) {
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
     firstname: firstname,
     lastname: lastname,
     email: email,
-    password: hashedPassword,
+    password: password,
     isSeller: isSeller,
   };
   const validatedUser = userSchema.safeParse(reqUser);
@@ -37,8 +36,15 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const hashedPassword = await hash(password, 10);
+
     const dbUser = await db.user.create({
-      data: reqUser,
+      data: {
+        firstname: reqUser.firstname,
+        lastname: reqUser.lastname,
+        email: reqUser.email,
+        password_hash: hashedPassword,
+      },
     });
 
     return NextResponse.json(
