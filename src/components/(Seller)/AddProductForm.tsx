@@ -8,7 +8,6 @@ import { formatCurrency } from "@/lib/formatters";
 import { Option, Select } from "@/components/ui/Select";
 import axios from "axios";
 import type { Category, SubCategory } from "@prisma/client";
-import { memo } from "react";
 
 export default function AddProductForm() {
   const [price, setPrice] = useState<number | null>(null);
@@ -131,7 +130,7 @@ const CategoriesDropDowns = () => {
         <Select
           name="category"
           id="category"
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             const category = categories?.find(
               (cat) => cat.name === e.target.value,
             );

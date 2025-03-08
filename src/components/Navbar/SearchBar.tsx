@@ -8,9 +8,9 @@ export default function SearchBar() {
   function handleSearch(e: MouseEvent<HTMLButtonElement>) {}
 
   return (
-    <div className="w-[45%] flex">
+    <div className="w-[40%] hidden md:flex">
       <input
-        className="w-[90%] px-8 py-1.5 rounded-l-full border-zinc-300 outline-none"
+        className="w-[80%] px-8 rounded-l-full border-zinc-300 outline-none"
         placeholder="Search..."
         value={searchText}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
