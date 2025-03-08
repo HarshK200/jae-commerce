@@ -1,6 +1,7 @@
 import SigninForm from "@/components/SigninForm";
 import JaeCart from "@public/logos-svg/jae_cart";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function SigninPage() {
   return (
@@ -12,7 +13,9 @@ export default function SigninPage() {
         <h1 className="pt-3 pb-8 text-2xl font-semibold text-slate-700">
           Sign in
         </h1>
-        <SigninForm />
+        <Suspense>
+          <SigninForm />
+        </Suspense>
         <p className="flex justify-center gap-1 my-1">
           Need to create an account?
           <Link href="/register" className="text-purple-900 hover:underline">

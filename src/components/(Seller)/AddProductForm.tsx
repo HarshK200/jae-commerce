@@ -10,32 +10,7 @@ import axios from "axios";
 import type { Category, SubCategory } from "@prisma/client";
 
 export default function AddProductForm() {
-  // TODO: change all this sh*t to redux
   const [price, setPrice] = useState<number | null>(null);
-  const [categories, setCategories] = useState<Category[] | null>(null);
-  const [subCategores, setSubCategories] = useState<SubCategory[] | null>(null);
-
-  const [selectedCat, setSelectedCat] = useState<Category | null>(null);
-  const [selectedSubCat, setSelectedSubCat] = useState<SubCategory | null>(
-    null,
-  );
-
-  useEffect(() => {
-    axios.get("/api/categories?all_cats=true").then((response) => {
-      setCategories(response.data.all_categories);
-      setSelectedCat(response.data.all_categories[0]);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (selectedCat) {
-      axios
-        .get(`/api/categories?parent_cat_id=${selectedCat?.id}`)
-        .then((response) => {
-          setSubCategories(response.data.sub_categories);
-        });
-    }
-  }, [selectedCat]);
 
   return (
     <form
@@ -81,35 +56,9 @@ export default function AddProductForm() {
           className="text-sm"
         />
       </div>
-      <div className="w-full flex gap-8">
-        <div className="flex flex-col gap-2 items-center">
-          <label htmlFor="category" className="text-sm text-slate-700">
-            Category
-          </label>
-          <Select>
-            {categories &&
-              categories.map((category) => (
-                <Option
-                  key={category.id}
-                  onClick={() => setSelectedCat(category)}
-                >
-                  {category.name}
-                </Option>
-              ))}
-          </Select>
-        </div>
-        <div className="flex flex-col gap-2 items-center">
-          <label htmlFor="category" className="text-sm text-slate-700">
-            Sub-Category
-          </label>
-          <Select>
-            {subCategores &&
-              subCategores.map((subCategory) => (
-                <Option key={subCategory.id}>{subCategory.name}</Option>
-              ))}
-          </Select>
-        </div>
-      </div>
+
+      <CategoriesDropDowns />
+
       <div>
         <label htmlFor="inventory" className="text-sm text-slate-700">
           Inventory
@@ -145,5 +94,66 @@ export default function AddProductForm() {
         Submit
       </Button>
     </form>
+  );
+}
+
+function CategoriesDropDowns() {
+  const [categories, setCategories] = useState<Category[] | null>(null);
+  const [subCategories, setSubCategories] = useState<SubCategory[] | null>(
+    null,
+  );
+  const [selectedCat, setSelectedCat] = useState<Category | null>(null);
+
+  useEffect(() => {
+    axios.get("/api/categories?all_cats=true").then((response) => {
+      setCategories(response.data.all_categories);
+      setSelectedCat(response.data.all_categories[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedCat) {
+      axios
+        .get(`/api/categories?parent_cat_id=${selectedCat?.id}`)
+        .then((response) => {
+          setSubCategories(response.data.sub_categories);
+        });
+    }
+  }, [selectedCat]);
+
+  return (
+    <div className="w-full flex gap-8">
+      <div className="flex flex-col gap-2 items-center">
+        <label htmlFor="category" className="text-sm text-slate-700">
+          Category
+        </label>
+        <Select name="category" id="category">
+          {categories &&
+            categories.map((category) => {
+              return (
+                <Option
+                  key={category.id}
+                  onClick={() => {
+                    setSelectedCat(category);
+                  }}
+                >
+                  {category.name}
+                </Option>
+              );
+            })}
+        </Select>
+      </div>
+      <div className="flex flex-col gap-2 items-center">
+        <label htmlFor="subCategory" className="text-sm text-slate-700">
+          Sub-Category
+        </label>
+        <Select name="subCategory" id="subCategory">
+          {subCategories &&
+            subCategories.map((subCategory) => (
+              <Option key={subCategory.id}>{subCategory.name}</Option>
+            ))}
+        </Select>
+      </div>
+    </div>
   );
 }

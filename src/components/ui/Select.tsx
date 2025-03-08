@@ -1,3 +1,4 @@
+"use client"
 interface SelectProps extends React.HTMLProps<HTMLSelectElement> {
   children?: React.ReactNode;
 }

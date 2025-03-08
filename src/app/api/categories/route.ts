@@ -8,7 +8,6 @@ export async function GET(req: NextRequest) {
       all_cats: Boolean(searchParams.get("all_cats")),
       parent_cat_id: searchParams.get("parent_cat_id"),
     };
-    console.log(queryParams);
 
     if (queryParams.all_cats) {
       const categories = await db.category.findMany({});

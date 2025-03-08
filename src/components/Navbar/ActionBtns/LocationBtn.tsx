@@ -1,17 +1,13 @@
 "use client";
-import {
-  clearLocation,
-  setLocation,
-} from "@/store/features/location/locationSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { RootState } from "@/store/store";
 import axios from "axios";
 import { MapPin } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function LocationBtn() {
-  const location = useAppSelector((state: RootState) => state.location);
-  const dispatch = useAppDispatch();
+  const [location, setLocation] = useState<{
+    city: string | undefined;
+    region: string | undefined;
+  }>({ city: undefined, region: undefined });
 
   async function getLocation() {
     try {
@@ -27,12 +23,9 @@ export default function LocationBtn() {
         region: "area",
       };
 
-      dispatch(
-        setLocation({
-          city: locData.city,
-          region: locData.region,
-        }),
-      );
+      setLocation((prev) => {
+        return { city: locData.city, region: locData.region };
+      });
     } catch (err) {
       console.log("error getting your location");
     }
@@ -40,11 +33,6 @@ export default function LocationBtn() {
 
   useEffect(() => {
     getLocation();
-
-    // cleanup of location state when component unmounts
-    return () => {
-      dispatch(clearLocation());
-    };
   }, []);
 
   return (
