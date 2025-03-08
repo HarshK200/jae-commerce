@@ -8,6 +8,7 @@ import { formatCurrency } from "@/lib/formatters";
 import { Option, Select } from "@/components/ui/Select";
 import axios from "axios";
 import type { Category, SubCategory } from "@prisma/client";
+import { memo } from "react";
 
 export default function AddProductForm() {
   const [price, setPrice] = useState<number | null>(null);
@@ -97,7 +98,7 @@ export default function AddProductForm() {
   );
 }
 
-function CategoriesDropDowns() {
+const CategoriesDropDowns = () => {
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [subCategories, setSubCategories] = useState<SubCategory[] | null>(
     null,
@@ -127,7 +128,17 @@ function CategoriesDropDowns() {
         <label htmlFor="category" className="text-sm text-slate-700">
           Category
         </label>
-        <Select name="category" id="category">
+        <Select
+          name="category"
+          id="category"
+          onChange={(e) => {
+            const category = categories?.find(
+              (cat) => cat.name === e.target.value,
+            );
+            // console.log("Category change to: ", category);
+            setSelectedCat(category!);
+          }}
+        >
           {categories &&
             categories.map((category) => {
               return (
@@ -156,4 +167,4 @@ function CategoriesDropDowns() {
       </div>
     </div>
   );
-}
+};
