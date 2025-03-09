@@ -56,7 +56,8 @@ model Category {
     description    String
     sub_categories SubCategory[]
 
-    created_at DateTime @default(now())
+    created_at DateTime  @default(now())
+    Product    Product[]
 }
 
 model SubCategory {
@@ -72,6 +73,8 @@ model SubCategory {
 
 model Product {
     id                String           @id @default(uuid())
+    category          Category         @relation(fields: [category_id], references: [id], onDelete: Restrict)
+    category_id       String
     sub_category      SubCategory      @relation(fields: [sub_category_id], references: [id], onDelete: Restrict)
     sub_category_id   String
     name              String

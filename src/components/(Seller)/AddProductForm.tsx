@@ -1,5 +1,5 @@
 "use client";
-import { createProduct } from "@/app/seller/_actions/products";
+import { addProduct } from "@/app/seller/_actions/products";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
@@ -13,10 +13,7 @@ export default function AddProductForm() {
   const [price, setPrice] = useState<number | null>(null);
 
   return (
-    <form
-      className="flex flex-col w-full py-8 px-44 gap-6"
-      action={createProduct}
-    >
+    <form className="flex flex-col w-full py-8 px-44 gap-6" action={addProduct}>
       <div className="w-full">
         <label htmlFor="name" className="text-sm text-slate-700">
           Name
@@ -66,25 +63,25 @@ export default function AddProductForm() {
         <Input required id="inventory" name="inventory" type="number" />
       </div>
       <div>
-        <label htmlFor="cover_image" className="text-sm text-slate-700">
+        <label htmlFor="coverImage" className="text-sm text-slate-700">
           Cover Image
         </label>
         <Input
           required
-          id="cover_image"
-          name="cover_image"
+          id="coverImage"
+          name="coverImage"
           type="file"
           accept="image/*"
         />
       </div>
       <div>
-        <label htmlFor="showcase_images" className="text-sm text-slate-700">
+        <label htmlFor="showcaseImages" className="text-sm text-slate-700">
           Showcase Images
         </label>
         <Input
           required
-          id="showcase_images"
-          name="showcase_images"
+          id="showcaseImages"
+          name="showcaseImages"
           type="file"
           accept="image/*"
           multiple
@@ -124,12 +121,12 @@ const CategoriesDropDowns = () => {
   return (
     <div className="w-full flex gap-8">
       <div className="flex flex-col gap-2 items-center">
-        <label htmlFor="category" className="text-sm text-slate-700">
+        <label htmlFor="categoryName" className="text-sm text-slate-700">
           Category
         </label>
         <Select
-          name="category"
-          id="category"
+          name="categoryName"
+          id="categoryName"
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             const category = categories?.find(
               (cat) => cat.name === e.target.value,
@@ -154,10 +151,10 @@ const CategoriesDropDowns = () => {
         </Select>
       </div>
       <div className="flex flex-col gap-2 items-center">
-        <label htmlFor="subCategory" className="text-sm text-slate-700">
+        <label htmlFor="subCategoryName" className="text-sm text-slate-700">
           Sub-Category
         </label>
-        <Select name="subCategory" id="subCategory">
+        <Select name="subCategoryName" id="subCategoryName">
           {subCategories &&
             subCategories.map((subCategory) => (
               <Option key={subCategory.id}>{subCategory.name}</Option>
