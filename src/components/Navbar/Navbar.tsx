@@ -62,15 +62,15 @@ export function SellerNavbar() {
   const router = useRouter();
 
   return (
-    <nav className="grid grid-cols-3 px-10 bg-zinc-100">
+    <nav className="flex px-10 bg-zinc-100 justify-between">
       <JaeLogo
         width={"1"}
-        classname="hover:cursor-pointer my-auto justify-self-start"
+        classname="hover:cursor-pointer my-auto justify-self-start py-3"
         onClick={() => {
           router.push("/");
         }}
       />
-      <div className="flex justify-self-center">
+      <div className="hidden md:flex">
         <NavLink href="/seller">Dashboard</NavLink>
         <NavLink href="/seller/products">Products</NavLink>
         <NavLink href="/seller/customers">Customers</NavLink>
@@ -82,7 +82,7 @@ export function SellerNavbar() {
           <ProfileBtn
             firstname={session?.data?.user.firstname}
             onClick={() => {
-              router.push("/user/profile");
+              router.push("/seller/profile");
             }}
           />
           <Signout />

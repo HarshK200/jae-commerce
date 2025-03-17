@@ -1,4 +1,3 @@
-import { Role } from "@prisma/client";
 import { prisma as db } from "../src/db"; // NOTE: you cannot use the tsconfig type alias here i.e. @/db
 import { hash } from "bcrypt";
 
@@ -6,7 +5,6 @@ async function seedUsers() {
   const dummyUsers = [
     {
       id: "1",
-      role: Role.BUYER,
       email: "testuser1@example.com",
       password_hash: await hash("123", 12),
       firstname: "Test",
@@ -23,7 +21,6 @@ async function seedUsers() {
         update: {},
         create: {
           id: user.id,
-          role: user.role,
           email: user.email,
           password_hash: user.password_hash,
           firstname: user.firstname,
@@ -130,39 +127,12 @@ async function seedAllCategories() {
       ],
     },
   ];
-
-  categories.forEach(async (category) => {
-    const parentCat = await db.category.upsert({
-      where: {
-        name: category.parentCat.name,
-      },
-      update: {},
-      create: {
-        name: category.parentCat.name,
-        description: category.parentCat.description,
-      },
-    });
-
-    category.subCats.forEach(async (subCat) => {
-      await db.subCategory.upsert({
-        where: {
-          name: subCat.name,
-        },
-        update: {},
-        create: {
-          parent_cat_id: parentCat.id,
-          name: subCat.name,
-          description: subCat.description,
-        },
-      });
-    });
-  });
 }
 
 async function seedDB() {
   try {
     await seedUsers();
-    await seedAllCategories();
+    // await seedAllCategories();
   } catch (err) {
     console.error("Error seeding database:", err);
     throw err;

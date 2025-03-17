@@ -11,6 +11,7 @@ export default async function ProfilePage() {
       <h1>firstname - {session?.user.firstname}</h1>
       <h1>lastname - {session?.user.lastname}</h1>
       <h1>email - {session?.user.email}</h1>
+      <h1>role - {session?.user.role}</h1>
     </div>
   );
 }

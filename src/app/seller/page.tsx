@@ -7,12 +7,12 @@ async function getSales(userId: string) {
     where: {
       user_id: userId,
     },
-    _sum: { price_paid: true },
+    _sum: { total_price_paid: true },
     _count: true,
   });
 
   return {
-    amount: data._sum.price_paid?.toNumber() || 0,
+    amount: data._sum.total_price_paid?.toNumber() || 0,
     numberOfOrders: data._count,
   };
 }

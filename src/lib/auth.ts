@@ -53,6 +53,7 @@ export const authOptions: AuthOptions = {
           // this will be what goes into the jwt token by next-auth
           return {
             id: user.id,
+            role: user.role,
             email: user.email,
             firstname: user.firstname,
             lastname: user.lastname,
@@ -72,6 +73,7 @@ export const authOptions: AuthOptions = {
         return {
           ...token,
           id: u.id,
+          role: u.role,
           firstname: u.firstname,
           lastname: u.lastname,
         };
@@ -84,6 +86,7 @@ export const authOptions: AuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          role: token.role,
           firstname: token.firstname,
           lastname: token.lastname,
         },

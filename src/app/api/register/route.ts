@@ -2,13 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import { prisma as db } from "@/db";
 import { z } from "zod";
+import { Role } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const { firstname, lastname, email, password, isSeller } = await req.json();
-
-  // TODO: write seller registration logic
-  if (isSeller) {
-  }
 
   // NOTE: ZOD validation on user sent data
   const userSchema = z.object({
@@ -38,8 +35,32 @@ export async function POST(req: NextRequest) {
   try {
     const hashedPassword = await hash(password, 10);
 
+    if (reqUser.isSeller) {
+      const dbSeller = await db.user.create({
+        data: {
+          role: Role.SELLER,
+          firstname: reqUser.firstname,
+          lastname: reqUser.lastname,
+          email: reqUser.email,
+          password_hash: hashedPassword,
+        },
+      });
+
+      return NextResponse.json(
+        {
+          status: "success",
+          user: {
+            id: dbSeller.id,
+            email: dbSeller.email,
+          },
+        },
+        { status: 201 },
+      );
+    }
+
     const dbUser = await db.user.create({
       data: {
+        role: Role.BUYER,
         firstname: reqUser.firstname,
         lastname: reqUser.lastname,
         email: reqUser.email,

@@ -13,138 +13,145 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// MODELS
-
-enum Role {
-    BUYER
-    SELLER
+// enums
+enum OrderStatus {
+    ORDERED
+    SHIPPED
+    DELIVERED
 }
 
+// MODELS
+
 model User {
-    id            String    @id @default(uuid())
-    role          Role      @default(BUYER)
+    id            String        @id @default(uuid())
     firstname     String
     lastname      String
-    email         String    @unique
+    email         String        @unique
     password_hash String
     phone_no      Int?
-    addresses     Address[]
-    is_verified   Boolean   @default(false)
-    cart          Cart?
+    addresses     UserAddress[]
+    is_verified   Boolean       @default(false)
+    shopping_cart ShoppingCart?
     orders        Order[]
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }
 
+model UserAddress {
+    id         String  @id @default(uuid())
+    user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id    String
+    address    Address @relation(fields: [address_id], references: [id], onDelete: Restrict)
+    address_id String  @unique
+}
+
 model Address {
-    id             Int    @id @default(autoincrement())
-    user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-    user_id        String
+    id             String       @id @default(uuid())
+    country        Country      @relation(fields: [country_id], references: [id], onDelete: Restrict)
+    country_id     Int
+    user_address   UserAddress?
     title          String
     address_line_1 String
     address_line_2 String
-    country        String
     city           String
     postal_code    String
     phone_no       Int
+    order          Order[]
 }
 
-model Category {
-    id             String        @id @default(uuid())
-    name           String        @unique
-    description    String
-    sub_categories SubCategory[]
-
-    created_at DateTime  @default(now())
-    Product    Product[]
+model Country {
+    id           Int       @id @default(autoincrement())
+    country_name String
+    address      Address[]
 }
 
-model SubCategory {
-    id            String    @id @default(uuid())
-    parent_cat    Category  @relation(fields: [parent_cat_id], references: [id], onDelete: Restrict)
-    parent_cat_id String
-    name          String    @unique
-    description   String
-    products      Product[]
+model ProductCategory {
+    id        String      @id @default(uuid())
+    name      String      @unique
+    products  Product[]
+    variation Variation[]
 
-    created_at DateTime @default(now())
+    parent_category_id String?           @unique
+    parent_category    ProductCategory?  @relation("ParentCategoryToChildCategory", fields: [parent_category_id], references: [id])
+    child_category     ProductCategory[] @relation("ParentCategoryToChildCategory")
 }
 
 model Product {
-    id                String           @id @default(uuid())
-    category          Category         @relation(fields: [category_id], references: [id], onDelete: Restrict)
+    id            String        @id @default(uuid())
+    name          String
+    description   String
+    product_image String
+    product_items ProductItem[]
+
+    category_id String
+    category    ProductCategory @relation(fields: [category_id], references: [id], onDelete: Restrict)
+}
+
+model ProductItem {
+    id                  String             @id @default(uuid())
+    product_id          String
+    product             Product            @relation(fields: [product_id], references: [id], onDelete: Cascade)
+    quantity_in_stock   Int
+    product_image       String
+    price               Decimal            @db.Decimal(10, 2)
+    variation_options   VariationOption[]
+    shopping_cart_items ShoppingCartItem[]
+    order_items         OrderItem[]
+}
+
+model Variation {
+    id                String            @id @default(uuid())
     category_id       String
-    sub_category      SubCategory      @relation(fields: [sub_category_id], references: [id], onDelete: Restrict)
-    sub_category_id   String
+    category          ProductCategory   @relation(fields: [category_id], references: [id], onDelete: Cascade)
     name              String
-    description       String
-    cover_img_url     String
-    showcase_img_urls String[]
-    product_varients  ProductVarient[]
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    variation_options VariationOption[]
 }
 
-model ProductVarient {
-    id         String      @id @default(uuid())
-    product    Product     @relation(fields: [product_id], references: [id], onDelete: Cascade)
-    product_id String
-    size       Float?
-    color      String?
-    price      Decimal     @db.Decimal(10, 2)
-    inventory  Int
-    cart_item  CartItem[]
-    order_item OrderItem[]
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+model VariationOption {
+    id            String        @id @default(uuid())
+    variation_id  String
+    variation     Variation     @relation(fields: [variation_id], references: [id], onDelete: Cascade)
+    value         String
+    product_items ProductItem[]
 }
 
-model Cart {
-    id          String     @id @default(uuid())
-    user        User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-    user_id     String     @unique
-    total_price Decimal    @db.Decimal(10, 2)
-    cart_items  CartItem[]
-
-    created_at DateTime @default(now())
-    update_at  DateTime @updatedAt
+model ShoppingCart {
+    id                  String             @id @default(uuid())
+    user_id             String             @unique
+    user                User               @relation(fields: [user_id], references: [id])
+    shopping_cart_items ShoppingCartItem[]
 }
 
-model CartItem {
-    id                 Int            @id @default(autoincrement())
-    cart               Cart           @relation(fields: [cart_id], references: [id], onDelete: Cascade)
-    cart_id            String
-    product_varient    ProductVarient @relation(fields: [product_varient_id], references: [id], onDelete: Restrict)
-    product_varient_id String         @unique
-    quantity           Int
-
-    created_at DateTime @default(now())
-    update_at  DateTime @updatedAt
+model ShoppingCartItem {
+    id               String       @id @default(uuid())
+    shopping_cart_id String
+    shopping_cart    ShoppingCart @relation(fields: [shopping_cart_id], references: [id], onDelete: Cascade)
+    product_item_id  String
+    product_item     ProductItem  @relation(fields: [product_item_id], references: [id], onDelete: Cascade)
+    quantity         Int
 }
 
 model Order {
-    id          String      @id @default(uuid())
-    price_paid  Decimal     @db.Decimal(10, 2)
-    user        User        @relation(fields: [user_id], references: [id])
-    user_id     String
-    order_items OrderItem[]
+    id                  String      @id @default(uuid())
+    user                User        @relation(fields: [user_id], references: [id])
+    user_id             String
+    shipping_address    Address     @relation(fields: [shipping_address_id], references: [id], onDelete: Restrict)
+    shipping_address_id String
+    total_price_paid    Decimal     @db.Decimal(10, 2)
+    order_status        OrderStatus
+    order_items         OrderItem[]
 
     created_at DateTime @default(now())
-    update_at  DateTime @updatedAt
+    updated_at DateTime @updatedAt
 }
 
 model OrderItem {
-    id Int @id @default(autoincrement())
-
-    order              Order          @relation(fields: [order_id], references: [id], onDelete: Restrict)
-    order_id           String
-    product_varient    ProductVarient @relation(fields: [product_varient_id], references: [id], onDelete: Restrict)
-    product_varient_id String         @unique
-    quantity           Int
-
-    created_at DateTime @default(now())
-    update_at  DateTime @updatedAt
+    id              String      @id @default(uuid())
+    order           Order?      @relation(fields: [order_id], references: [id], onDelete: Cascade)
+    order_id        String?
+    product_item    ProductItem @relation(fields: [product_item_id], references: [id], onDelete: Restrict)
+    product_item_id String
+    quantity        Int
+    price_paid      Decimal     @db.Decimal(10, 2)
 }

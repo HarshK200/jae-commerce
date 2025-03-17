@@ -12,14 +12,14 @@ type tFormDetails = {
   lastname?: string;
   email?: string;
   password?: string;
-  isSeller?: boolean;
+  isSeller: boolean;
 };
 
-export function UserRegisterForm() {
+export function RegisterForm({ isSeller }: { isSeller: boolean }) {
   const [responseErr, setResponseErr] = useState<string | null>(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formDetails, setFormDeatils] = useState<tFormDetails>({
-    isSeller: false,
+    isSeller: isSeller,
   });
   const router = useRouter();
 

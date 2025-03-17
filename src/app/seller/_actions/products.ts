@@ -1,6 +1,7 @@
 "use server";
 import { z } from "zod";
 import { prisma as db } from "@/db";
+import { redirect } from "next/navigation";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -72,5 +73,6 @@ export async function addProduct(formData: FormData) {
     data: newProductData,
   });
 
-  console.log(newProductData);
+  console.log("New product created successfully", newProductData);
+  redirect("/seller/products");
 }

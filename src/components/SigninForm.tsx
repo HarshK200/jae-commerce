@@ -17,7 +17,7 @@ export default function SigninForm() {
   const [formDetails, setFormDeatils] = useState<tFormDetails>({});
   const [responseErr, setResponseErr] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/user/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || "/user";
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent) {
@@ -28,7 +28,7 @@ export default function SigninForm() {
         redirect: false,
         email: formDetails.email,
         password: formDetails.password,
-        callbackUrl: callbackUrl || "/home",
+        callbackUrl: callbackUrl || "/",
       });
 
       if (res?.ok) {
