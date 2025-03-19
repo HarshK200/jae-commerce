@@ -1,19 +1,22 @@
 "use client";
-import { addProduct } from "@/app/seller/_actions/products";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { formatCurrency } from "@/lib/formatters";
 import { Option, Select } from "@/components/ui/Select";
-import axios from "axios";
-import type { Category, SubCategory } from "@prisma/client";
 
 export default function AddProductForm() {
   const [price, setPrice] = useState<number | null>(null);
 
   return (
-    <form className="flex flex-col w-full py-8 px-44 gap-6" action={addProduct}>
+    <form
+      className="flex flex-col w-full py-8 px-10 md:px-16 lg:px-24 gap-6"
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert("submit was pressed");
+      }}
+    >
       <div className="w-full">
         <label htmlFor="name" className="text-sm text-slate-700">
           Name
@@ -95,28 +98,9 @@ export default function AddProductForm() {
 }
 
 const CategoriesDropDowns = () => {
-  const [categories, setCategories] = useState<Category[] | null>(null);
-  const [subCategories, setSubCategories] = useState<SubCategory[] | null>(
-    null,
-  );
-  const [selectedCat, setSelectedCat] = useState<Category | null>(null);
-
-  useEffect(() => {
-    axios.get("/api/categories?all_cats=true").then((response) => {
-      setCategories(response.data.all_categories);
-      setSelectedCat(response.data.all_categories[0]);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (selectedCat) {
-      axios
-        .get(`/api/categories?parent_cat_id=${selectedCat?.id}`)
-        .then((response) => {
-          setSubCategories(response.data.sub_categories);
-        });
-    }
-  }, [selectedCat]);
+  const [categories, setCategories] = useState<any[] | null>(null);
+  const [subCategories, setSubCategories] = useState<any[] | null>(null);
+  const [selectedCat, setSelectedCat] = useState<any | null>(null);
 
   return (
     <div className="w-full flex gap-8">

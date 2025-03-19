@@ -2,6 +2,31 @@
 CREATE TYPE "OrderStatus" AS ENUM ('ORDERED', 'SHIPPED', 'DELIVERED');
 
 -- CreateTable
+CREATE TABLE "Seller" (
+    "id" TEXT NOT NULL,
+    "firstname" TEXT NOT NULL,
+    "lastname" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password_hash" TEXT NOT NULL,
+    "phone_no" INTEGER,
+    "is_verified" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Seller_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ShopAddress" (
+    "id" TEXT NOT NULL,
+    "seller_id" TEXT NOT NULL,
+    "address_id" TEXT NOT NULL,
+    "is_default" BOOLEAN NOT NULL,
+
+    CONSTRAINT "ShopAddress_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
@@ -21,6 +46,7 @@ CREATE TABLE "UserAddress" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "address_id" TEXT NOT NULL,
+    "is_default" BOOLEAN NOT NULL,
 
     CONSTRAINT "UserAddress_pkey" PRIMARY KEY ("id")
 );
@@ -63,6 +89,7 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "product_image" TEXT NOT NULL,
     "category_id" TEXT NOT NULL,
+    "seller_id" TEXT NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -118,6 +145,7 @@ CREATE TABLE "ShoppingCartItem" (
 CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
+    "seller_id" TEXT NOT NULL,
     "shipping_address_id" TEXT NOT NULL,
     "total_price_paid" DECIMAL(10,2) NOT NULL,
     "order_status" "OrderStatus" NOT NULL,
@@ -147,6 +175,12 @@ CREATE TABLE "_ProductItemToVariationOption" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Seller_email_key" ON "Seller"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ShopAddress_address_id_key" ON "ShopAddress"("address_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
@@ -165,6 +199,12 @@ CREATE UNIQUE INDEX "ShoppingCart_user_id_key" ON "ShoppingCart"("user_id");
 CREATE INDEX "_ProductItemToVariationOption_B_index" ON "_ProductItemToVariationOption"("B");
 
 -- AddForeignKey
+ALTER TABLE "ShopAddress" ADD CONSTRAINT "ShopAddress_seller_id_fkey" FOREIGN KEY ("seller_id") REFERENCES "Seller"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ShopAddress" ADD CONSTRAINT "ShopAddress_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "Address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "UserAddress" ADD CONSTRAINT "UserAddress_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -178,6 +218,9 @@ ALTER TABLE "ProductCategory" ADD CONSTRAINT "ProductCategory_parent_category_id
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "ProductCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_seller_id_fkey" FOREIGN KEY ("seller_id") REFERENCES "Seller"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductItem" ADD CONSTRAINT "ProductItem_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -199,6 +242,9 @@ ALTER TABLE "ShoppingCartItem" ADD CONSTRAINT "ShoppingCartItem_product_item_id_
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_seller_id_fkey" FOREIGN KEY ("seller_id") REFERENCES "Seller"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_shipping_address_id_fkey" FOREIGN KEY ("shipping_address_id") REFERENCES "Address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

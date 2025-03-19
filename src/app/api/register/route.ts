@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import { prisma as db } from "@/db";
 import { z } from "zod";
-import { Role } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const { firstname, lastname, email, password, isSeller } = await req.json();
@@ -38,7 +37,6 @@ export async function POST(req: NextRequest) {
     if (reqUser.isSeller) {
       const dbSeller = await db.user.create({
         data: {
-          role: Role.SELLER,
           firstname: reqUser.firstname,
           lastname: reqUser.lastname,
           email: reqUser.email,
@@ -60,7 +58,6 @@ export async function POST(req: NextRequest) {
 
     const dbUser = await db.user.create({
       data: {
-        role: Role.BUYER,
         firstname: reqUser.firstname,
         lastname: reqUser.lastname,
         email: reqUser.email,

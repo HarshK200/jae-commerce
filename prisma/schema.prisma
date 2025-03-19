@@ -22,6 +22,31 @@ enum OrderStatus {
 
 // MODELS
 
+model Seller {
+    id             String        @id @default(uuid())
+    firstname      String
+    lastname       String
+    email          String        @unique
+    password_hash  String
+    phone_no       Int?
+    shop_addresses ShopAddress[]
+    is_verified    Boolean       @default(false)
+    products       Product[]
+    orders         Order[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+}
+
+model ShopAddress {
+    id         String  @id @default(uuid())
+    seller     Seller  @relation(fields: [seller_id], references: [id], onDelete: Cascade)
+    seller_id  String
+    address    Address @relation(fields: [address_id], references: [id], onDelete: Restrict)
+    address_id String  @unique
+    is_default Boolean
+}
+
 model User {
     id            String        @id @default(uuid())
     firstname     String
@@ -44,6 +69,7 @@ model UserAddress {
     user_id    String
     address    Address @relation(fields: [address_id], references: [id], onDelete: Restrict)
     address_id String  @unique
+    is_default Boolean
 }
 
 model Address {
@@ -51,6 +77,7 @@ model Address {
     country        Country      @relation(fields: [country_id], references: [id], onDelete: Restrict)
     country_id     Int
     user_address   UserAddress?
+    shop_address   ShopAddress?
     title          String
     address_line_1 String
     address_line_2 String
@@ -86,6 +113,8 @@ model Product {
 
     category_id String
     category    ProductCategory @relation(fields: [category_id], references: [id], onDelete: Restrict)
+    seller_id   String
+    seller      Seller          @relation(fields: [seller_id], references: [id], onDelete: Restrict)
 }
 
 model ProductItem {
@@ -136,6 +165,8 @@ model Order {
     id                  String      @id @default(uuid())
     user                User        @relation(fields: [user_id], references: [id])
     user_id             String
+    seller              Seller      @relation(fields: [seller_id], references: [id])
+    seller_id           String
     shipping_address    Address     @relation(fields: [shipping_address_id], references: [id], onDelete: Restrict)
     shipping_address_id String
     total_price_paid    Decimal     @db.Decimal(10, 2)
