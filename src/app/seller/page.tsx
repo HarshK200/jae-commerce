@@ -2,10 +2,10 @@ import SellerDashboardCard from "@/components/(Seller)/SellerDashBoardCard";
 import { prisma as db } from "@/db";
 import { formatNumber, formatCurrency } from "@/lib/formatters";
 
-async function getSales(userId: string) {
+async function getSales(sellerId: string) {
   const data = await db.order.aggregate({
     where: {
-      user_id: userId,
+      seller_id: sellerId,
     },
     _sum: { total_price_paid: true },
     _count: true,

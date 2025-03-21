@@ -34,6 +34,27 @@ async function seedUsers() {
   }
 }
 
+async function seedCategories() {
+  const categories = [
+    { name: "Electronics" },
+    { name: "Motor" },
+    { name: "Fashion" },
+    { name: "Collectibles And Art" },
+    { name: "Sports" },
+    { name: "Health & beauty" },
+  ];
+
+  try {
+    categories.forEach(async (category) => {
+      await db.productCategory.create({
+        data: category,
+      });
+    });
+  } catch (e) {
+    console.log(`Error seeding categories: ${e}`);
+  }
+}
+
 async function seedAllCategories() {
   const categories = [
     {
@@ -132,6 +153,7 @@ async function seedAllCategories() {
 async function seedDB() {
   try {
     await seedUsers();
+    await seedCategories();
     // await seedAllCategories();
   } catch (err) {
     console.error("Error seeding database:", err);

@@ -8,7 +8,7 @@ interface ProfileBtnProps extends React.HTMLProps<HTMLButtonElement> {
 export default function ProfileBtn({ firstname, onClick }: ProfileBtnProps) {
   return (
     <button
-      className="flex gap-2 transition-transform hover:scale-105 active:scale-100"
+      className="flex items-center gap-2 transition-transform hover:scale-105 active:scale-100"
       onClick={onClick}
     >
       <UserRound width={23} />

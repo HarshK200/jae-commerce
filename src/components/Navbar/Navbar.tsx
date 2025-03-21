@@ -16,9 +16,9 @@ export function Navbar() {
   const router = useRouter();
 
   return (
-    <nav className="flex justify-between items-center py-2.5 px-10 bg-zinc-100">
+    <nav className="text-sm flex justify-between items-center py-2.5 px-4 bg-zinc-100">
       <JaeLogo
-        width={"1"}
+        width={"0.9"}
         classname="hover:cursor-pointer"
         onClick={() => {
           router.push("/");
@@ -26,6 +26,7 @@ export function Navbar() {
       />
       <SearchBar />
 
+      {/* Large size */}
       <div className="items-center gap-x-7 hidden lg:flex">
         <CartBtn />
         <LocationBtn />
@@ -44,13 +45,18 @@ export function Navbar() {
         )}
       </div>
 
+      {/* Medium size */}
       <div className="items-center gap-x-7 hidden md:flex lg:hidden">
-        <ShoppingCart />
-        <Menu className="cursor-pointer" />
+        <ShoppingCart width={20} />
+        <Menu width={20} className="cursor-pointer" />
       </div>
 
+      {/* Small size */}
       <div className="flex md:hidden gap-x-5 f">
-        <Search className="text-primary cursor-pointer transition-transform transform hover:text-accent hover:scale-110 active:scale-100 hover:shadow-[0_0_20px_rgba(39, 206, 39, 1)]" />
+        <Search
+          width={23}
+          className="text-primary cursor-pointer transition-transform transform hover:text-accent hover:scale-110 active:scale-100 hover:shadow-[0_0_20px_rgba(39, 206, 39, 1)]"
+        />
         <Menu className="cursor-pointer" />
       </div>
     </nav>
@@ -64,7 +70,7 @@ export function SellerNavbar() {
   return (
     <nav className="flex px-10 bg-zinc-100 justify-between">
       <JaeLogo
-        width={"1"}
+        width={"0.8"}
         classname="hover:cursor-pointer my-auto justify-self-start py-3"
         onClick={() => {
           router.push("/");
@@ -102,7 +108,7 @@ function NavLink(props: Omit<ComponentProps<typeof Link>, "classname">) {
   return (
     <Link
       {...props}
-      className={`h-full px-4 py-3.5 hover:bg-secondary ${pathName === props.href ? "bg-accent" : ""}`}
+      className={`h-full px-4 py-3 hover:bg-secondary ${pathName === props.href ? "bg-accent" : ""}`}
     />
   );
 }

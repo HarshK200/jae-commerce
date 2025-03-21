@@ -1,5 +1,5 @@
 import React from "react";
-import LandingPage from "@/components/Landing/LandingPage";
+import LandingPage from "@/pages/LandingPage";
 import { Navbar } from "@/components/Navbar/Navbar";
 
 // server side rendered page because of the async

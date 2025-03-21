@@ -15,6 +15,7 @@ export default {
         primary: "#27ce27",
         secondary: "#e5ffdb",
         accent: "#84ff3d",
+        "border-color": "#E7E7EA",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],

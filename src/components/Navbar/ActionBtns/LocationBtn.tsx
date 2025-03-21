@@ -36,8 +36,8 @@ export default function LocationBtn() {
   }, []);
 
   return (
-    <button className="flex items-center gap-2 transition-transform hover:scale-105 active:scale-100">
-      <MapPin width={28} />
+    <button className="flex items-center items-center gap-2 transition-transform hover:scale-105 active:scale-100">
+      <MapPin width={20} />
       <div className="flex flex-col">
         <p>
           {location.city && location.region
