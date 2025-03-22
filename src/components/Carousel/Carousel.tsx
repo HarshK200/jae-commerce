@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { GetStartedBtn } from "./GettingStartedBtn";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Circle, Pause, Play } from "lucide-react";
 
 const CarouselCardsData = [
   {
@@ -12,13 +12,13 @@ const CarouselCardsData = [
   {
     title: "Returns made simple",
     subTitle: "Not happy with your purchase? It's easy to start a return.",
-    imageUrl: "/assets/loading_package.jpg",
-    className: "bg-center",
+    imageUrl: "/assets/delivery_man_on_scooty.jpg",
   },
   {
     title: "Get your order or your money back",
     subTitle: "Shop confidently with eBay Money Back Guarantee.",
-    imageUrl: "/assets/delivery_man_on_scooty.jpg",
+    imageUrl: "/assets/loading_package.jpg",
+    className: "bg-center",
   },
 ];
 
@@ -79,6 +79,20 @@ export function Carousel() {
           />
         );
       })}
+      <div className="absolute flex bottom-10 left-[50%] translate-x-[-50%]">
+        {CarouselCardsData.map((_, index) => (
+          <button
+            key={index}
+            className="px-1 cursor-default"
+            onClick={() => setCurrentImageIdx(index)}
+          >
+            <Circle
+              width={9}
+              className={`text-white cursor-pointer ${index === currentImageIdx ? "fill-white" : ""}`}
+            />
+          </button>
+        ))}
+      </div>
       <button
         className="absolute right-[7.5rem] bottom-12 bg-white rounded-full p-0.5"
         onClick={showPrevImage}
