@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GetStartedBtn } from "./GettingStartedBtn";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 const CarouselCardsData = [
   {
@@ -15,10 +15,39 @@ const CarouselCardsData = [
     imageUrl: "/assets/loading_package.jpg",
     className: "bg-center",
   },
+  {
+    title: "Get your order or your money back",
+    subTitle: "Shop confidently with eBay Money Back Guarantee.",
+    imageUrl: "/assets/delivery_man_on_scooty.jpg",
+  },
 ];
 
 export function Carousel() {
   const [currentImageIdx, setCurrentImageIdx] = useState<number>(0);
+  const [autoScrollId, setAutoScrollId] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    toggleAutoScroll();
+
+    return () => {
+      autoScrollId ? clearInterval(autoScrollId) : null;
+    };
+  }, []);
+
+  function toggleAutoScroll() {
+    if (!autoScrollId) {
+      const IntervalId = setInterval(() => {
+        showNextImage();
+      }, 5000);
+
+      setAutoScrollId(IntervalId);
+      return IntervalId;
+    }
+
+    clearInterval(autoScrollId);
+    setAutoScrollId(null);
+    return null;
+  }
 
   function showNextImage() {
     setCurrentImageIdx((prev) => {
@@ -50,14 +79,24 @@ export function Carousel() {
           />
         );
       })}
-      <ChevronLeft
-        className="absolute right-20 bottom-12"
+      <button
+        className="absolute right-[7.5rem] bottom-12 bg-white rounded-full p-0.5"
         onClick={showPrevImage}
-      />
-      <ChevronRight
-        className="absolute right-10 bottom-12"
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        className="absolute right-20 bottom-12 bg-white rounded-full p-0.5"
         onClick={showNextImage}
-      />
+      >
+        <ChevronRight />
+      </button>
+      <button
+        className="absolute right-10 bottom-12 bg-white rounded-full p-0.5"
+        onClick={() => toggleAutoScroll()}
+      >
+        {autoScrollId ? <Pause width={22} /> : <Play width={22} />}
+      </button>
     </section>
   );
 }
@@ -79,7 +118,7 @@ function CarouselCard({
 }: CarouselCardProps) {
   return (
     <div
-      className={`flex-shrink-0 flex flex-col md:justify-center w-full max-w-[1440px] h-96 md:h-80 text-white my-8 px-10 bg-cover bg-bottom lg:rounded-md ${className}`}
+      className={`flex-shrink-0 flex flex-col md:justify-center w-full max-w-[1440px] h-96 md:h-[22rem] text-white my-8 px-10 bg-cover bg-bottom xl:rounded-md ${className}`}
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), url(${imageUrl})`,
         translate: `${-100 * currentImageIndex}%`,

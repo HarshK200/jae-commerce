@@ -25,9 +25,10 @@ function getIconForCategory(categoryName: String) {
   }
 }
 
-export function CategoryBtn({ categoryName }: ButtonProps) {
+export function CategoryBtn({ categoryName, children }: ButtonProps) {
   return (
     <button className="whitespace-nowrap flex items-center gap-2 text-sm font-bold px-3 py-1 bg-background border-border-color border-[1px]">
+      {children}
       {getIconForCategory(categoryName)}
       <p>{categoryName}</p>
     </button>
